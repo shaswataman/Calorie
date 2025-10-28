@@ -1,7 +1,7 @@
 # ToDo List
 
 ## Current Issues
-- [ ] amounts are all messed up
+- [x] amounts are all messed up (fixed nutrition values not updating)
 - [ ] rice bowl calculator
 
 ## Future Features

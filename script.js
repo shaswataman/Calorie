@@ -296,7 +296,7 @@ class ShakeMixer {
     const moreIngredientRows = this.getMoreIngredientRows();
 
     const html = `
-      <div class="max-w-4xl mx-auto p-6">
+       <div class="max-w-6xl mx-auto p-6">
         <h1 class="text-2xl font-semibold mb-4">Shake Mixer — interactive nutrition builder</h1>
         <p class="mb-4 text-sm text-slate-600">Adjust amounts below (grams / ml / scoops) and the totals update instantly. Set ingredients to 0 to remove them.</p>
 
@@ -307,17 +307,17 @@ class ShakeMixer {
           <button id="copy-btn" class="px-3 py-1 rounded bg-emerald-100 hover:bg-emerald-200 ml-auto">Copy totals</button>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="bg-white p-4 rounded shadow">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div class="bg-white p-4 rounded shadow lg:col-span-2">
             <h2 class="font-medium mb-3">Ingredients</h2>
 
-            ${ingredientRows.map((row) => `
-              <div class="flex items-center gap-3 mb-3">
-                <div class="flex-1">
-                  <div class="text-sm font-medium">${row.name}</div>
-                </div>
+             ${ingredientRows.map((row) => `
+               <div class="flex items-center gap-2 mb-3">
+                 <div class="w-32 flex-shrink-0">
+                   <div class="text-sm font-medium">${row.name}</div>
+                 </div>
 
-                <div class="flex items-center gap-2">
+                 <div class="flex items-center gap-1.5 w-48 flex-shrink-0">
                   <input
                     type="range"
                     id="${row.id}-slider"
@@ -325,7 +325,7 @@ class ShakeMixer {
                     max="${row.inputProps.max}"
                     step="${row.inputProps.step}"
                     value="${row.value}"
-                    class="w-32"
+                    class="flex-1"
                   />
                   <input
                     type="number"
@@ -334,19 +334,19 @@ class ShakeMixer {
                     max="${row.inputProps.max}"
                     step="${row.inputProps.step}"
                     value="${row.value}"
-                    class="w-16 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    class="w-14 px-1.5 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
-                  <span class="text-xs text-slate-500">${row.id === 'milk' ? 'ml' : row.id === 'banana' || row.id === 'kiwi' ? 'fruits' : row.id === 'whey' ? 'scoops' : 'g'}</span>
+                  <span class="text-xs text-slate-500 w-10">${row.id === 'milk' ? 'ml' : row.id === 'banana' || row.id === 'kiwi' ? 'fruits' : row.id === 'whey' ? 'scoops' : 'g'}</span>
                 </div>
 
-                <div class="w-40 text-sm">
+                <div class="w-28 text-sm ml-auto mr-4" id="${row.id}-nutrition">
                   <div class="flex justify-between">
-                    <div>${row.values.kcal} kcal</div>
-                    <div>${row.values.protein} g P</div>
+                    <div id="${row.id}-kcal">${row.values.kcal} kcal</div>
+                    <div id="${row.id}-protein">${row.values.protein} g P</div>
                   </div>
                   <div class="flex justify-between text-xs text-slate-500">
-                    <div>${row.values.carbs} C</div>
-                    <div>${row.values.fat} F</div>
+                    <div id="${row.id}-carbs">${row.values.carbs} C</div>
+                    <div id="${row.id}-fat">${row.values.fat} F</div>
                   </div>
                 </div>
               </div>
@@ -359,13 +359,13 @@ class ShakeMixer {
               </button>
               
               <div id="more-items-section" class="${this.showMoreItems ? 'block' : 'hidden'} mt-3">
-                ${moreIngredientRows.map((row) => `
-                  <div class="flex items-center gap-3 mb-3">
-                    <div class="flex-1">
-                      <div class="text-sm font-medium">${row.name}</div>
-                    </div>
+                 ${moreIngredientRows.map((row) => `
+                   <div class="flex items-center gap-2 mb-3">
+                     <div class="w-36 flex-shrink-0">
+                       <div class="text-sm font-medium">${row.name}</div>
+                     </div>
 
-                    <div class="flex items-center gap-2">
+                     <div class="flex items-center gap-1.5 w-48 flex-shrink-0">
                       <input
                         type="range"
                         id="${row.id}-slider"
@@ -373,7 +373,7 @@ class ShakeMixer {
                         max="${row.inputProps.max}"
                         step="${row.inputProps.step}"
                         value="${row.value}"
-                        class="w-32"
+                        class="flex-1"
                       />
                       <input
                         type="number"
@@ -382,19 +382,19 @@ class ShakeMixer {
                         max="${row.inputProps.max}"
                         step="${row.inputProps.step}"
                         value="${row.value}"
-                        class="w-16 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        class="w-14 px-1.5 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
-                      <span class="text-xs text-slate-500">${row.id === 'normal_milk' ? 'ml' : 'g'}</span>
+                      <span class="text-xs text-slate-500 w-10">${row.id === 'normal_milk' ? 'ml' : 'g'}</span>
                     </div>
 
-                    <div class="w-40 text-sm">
+                    <div class="w-28 text-sm ml-auto mr-4" id="${row.id}-nutrition">
                       <div class="flex justify-between">
-                        <div>${row.values.kcal} kcal</div>
-                        <div>${row.values.protein} g P</div>
+                        <div id="${row.id}-kcal">${row.values.kcal} kcal</div>
+                        <div id="${row.id}-protein">${row.values.protein} g P</div>
                       </div>
                       <div class="flex justify-between text-xs text-slate-500">
-                        <div>${row.values.carbs} C</div>
-                        <div>${row.values.fat} F</div>
+                        <div id="${row.id}-carbs">${row.values.carbs} C</div>
+                        <div id="${row.id}-fat">${row.values.fat} F</div>
                       </div>
                     </div>
                   </div>
@@ -486,20 +486,16 @@ class ShakeMixer {
         input.value = row.value;
       }
 
+      // Update nutrition values using IDs
+      const kcalEl = document.getElementById(`${row.id}-kcal`);
+      const proteinEl = document.getElementById(`${row.id}-protein`);
+      const carbsEl = document.getElementById(`${row.id}-carbs`);
+      const fatEl = document.getElementById(`${row.id}-fat`);
 
-      // Update nutrition values
-      const nutritionDiv = slider?.nextElementSibling;
-      if (nutritionDiv) {
-        const kcalEl = nutritionDiv.querySelector('.flex.justify-between > div:first-child');
-        const proteinEl = nutritionDiv.querySelector('.flex.justify-between > div:last-child');
-        const carbsEl = nutritionDiv.querySelector('.text-xs.text-slate-500 > div:first-child');
-        const fatEl = nutritionDiv.querySelector('.text-xs.text-slate-500 > div:last-child');
-
-        if (kcalEl) kcalEl.textContent = `${row.values.kcal} kcal`;
-        if (proteinEl) proteinEl.textContent = `${row.values.protein} g P`;
-        if (carbsEl) carbsEl.textContent = `${row.values.carbs} C`;
-        if (fatEl) fatEl.textContent = `${row.values.fat} F`;
-      }
+      if (kcalEl) kcalEl.textContent = `${row.values.kcal} kcal`;
+      if (proteinEl) proteinEl.textContent = `${row.values.protein} g P`;
+      if (carbsEl) carbsEl.textContent = `${row.values.carbs} C`;
+      if (fatEl) fatEl.textContent = `${row.values.fat} F`;
     });
 
     // Update more ingredient rows
@@ -514,19 +510,16 @@ class ShakeMixer {
         input.value = row.value;
       }
 
-      // Update nutrition values
-      const nutritionDiv = slider?.nextElementSibling;
-      if (nutritionDiv) {
-        const kcalEl = nutritionDiv.querySelector('.flex.justify-between > div:first-child');
-        const proteinEl = nutritionDiv.querySelector('.flex.justify-between > div:last-child');
-        const carbsEl = nutritionDiv.querySelector('.text-xs.text-slate-500 > div:first-child');
-        const fatEl = nutritionDiv.querySelector('.text-xs.text-slate-500 > div:last-child');
+      // Update nutrition values using IDs
+      const kcalEl = document.getElementById(`${row.id}-kcal`);
+      const proteinEl = document.getElementById(`${row.id}-protein`);
+      const carbsEl = document.getElementById(`${row.id}-carbs`);
+      const fatEl = document.getElementById(`${row.id}-fat`);
 
-        if (kcalEl) kcalEl.textContent = `${row.values.kcal} kcal`;
-        if (proteinEl) proteinEl.textContent = `${row.values.protein} g P`;
-        if (carbsEl) carbsEl.textContent = `${row.values.carbs} C`;
-        if (fatEl) fatEl.textContent = `${row.values.fat} F`;
-      }
+      if (kcalEl) kcalEl.textContent = `${row.values.kcal} kcal`;
+      if (proteinEl) proteinEl.textContent = `${row.values.protein} g P`;
+      if (carbsEl) carbsEl.textContent = `${row.values.carbs} C`;
+      if (fatEl) fatEl.textContent = `${row.values.fat} F`;
     });
 
     // Update per-ingredient detail section
