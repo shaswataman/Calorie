@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@source "../index.html";
+@source "./**/*.{js,jsx,ts,tsx}";
+
+
