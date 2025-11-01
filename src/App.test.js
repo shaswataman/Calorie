@@ -294,6 +294,25 @@ describe('Shake Mixer App', () => {
     });
   });
 
+  describe('Banana in grams', () => {
+    test('shows Banana (grams) under More Items and updates value', async () => {
+      render(<App />);
+
+      const toggleButton = screen.getByRole('button', { name: /more items/i });
+      await userEvent.click(toggleButton);
+
+      expect(screen.getByText(/Banana \(grams\)/i)).toBeInTheDocument();
+
+      const bananaGramsInput = screen.getByLabelText(/Banana \(grams\) value/i);
+      await userEvent.clear(bananaGramsInput);
+      await userEvent.type(bananaGramsInput, '100');
+
+      await waitFor(() => {
+        expect(bananaGramsInput.value).toBe('100');
+      });
+    });
+  });
+
   describe('Nutrition Calculations', () => {
     test('updates protein totals correctly', async () => {
       render(<App />);

@@ -6,6 +6,7 @@ import { persistenceProvider, getTodayKey } from './services/mealPersistence';
 const NUTRIENTS = {
   milk_per_ml: { kcal: 120 / 250, protein: 8 / 250, carbs: 12 / 250, fat: 4 / 250 },
   banana_per_fruit: { kcal: 105, protein: 1.3, carbs: 27, fat: 0.3 },
+  banana_per_g: { kcal: 89 / 100, protein: 1.1 / 100, carbs: 23 / 100, fat: 0.3 / 100 },
   kiwi_per_fruit: { kcal: 42, protein: 0.8, carbs: 10, fat: 0.4 },
   berries_per_g: { kcal: 70 / 20, protein: 0.5 / 20, carbs: 17 / 20, fat: 0.2 / 20 },
   pb_per_g: { kcal: 95 / 16, protein: 4 / 16, carbs: 3 / 16, fat: 8 / 16 },
@@ -114,6 +115,7 @@ function ShakeMixerView({ onSaved }) {
   // State for ingredient amounts
   const [milkMl, setMilkMl] = useState(250);
   const [bananaFruits, setBananaFruits] = useState(1);
+  const [bananaG, setBananaG] = useState(0);
   const [kiwiFruits, setKiwiFruits] = useState(1);
   const [berriesG, setBerriesG] = useState(20);
   const [pbG, setPbG] = useState(0);
@@ -127,6 +129,7 @@ function ShakeMixerView({ onSaved }) {
   const totals = useMemo(() => {
     const m = NUTRIENTS.milk_per_ml;
     const b = NUTRIENTS.banana_per_fruit;
+    const bg = NUTRIENTS.banana_per_g;
     const k = NUTRIENTS.kiwi_per_fruit;
     const be = NUTRIENTS.berries_per_g;
     const pb = NUTRIENTS.pb_per_g;
@@ -138,6 +141,7 @@ function ShakeMixerView({ onSaved }) {
     const kcal =
       milkMl * m.kcal +
       bananaFruits * b.kcal +
+      bananaG * bg.kcal +
       kiwiFruits * k.kcal +
       berriesG * be.kcal +
       pbG * pb.kcal +
@@ -149,6 +153,7 @@ function ShakeMixerView({ onSaved }) {
     const protein =
       milkMl * m.protein +
       bananaFruits * b.protein +
+      bananaG * bg.protein +
       kiwiFruits * k.protein +
       berriesG * be.protein +
       pbG * pb.protein +
@@ -160,6 +165,7 @@ function ShakeMixerView({ onSaved }) {
     const carbs =
       milkMl * m.carbs +
       bananaFruits * b.carbs +
+      bananaG * bg.carbs +
       kiwiFruits * k.carbs +
       berriesG * be.carbs +
       pbG * pb.carbs +
@@ -171,6 +177,7 @@ function ShakeMixerView({ onSaved }) {
     const fat =
       milkMl * m.fat +
       bananaFruits * b.fat +
+      bananaG * bg.fat +
       kiwiFruits * k.fat +
       berriesG * be.fat +
       pbG * pb.fat +
@@ -185,7 +192,7 @@ function ShakeMixerView({ onSaved }) {
       carbs: round(carbs),
       fat: round(fat),
     };
-  }, [milkMl, bananaFruits, kiwiFruits, berriesG, pbG, iceG, wheyScoops, normalMilkMl, oatsG]);
+  }, [milkMl, bananaFruits, bananaG, kiwiFruits, berriesG, pbG, iceG, wheyScoops, normalMilkMl, oatsG]);
 
   // Quick set presets
   const quickSet = (mode) => {
@@ -289,6 +296,15 @@ function ShakeMixerView({ onSaved }) {
   ];
 
   const moreIngredients = [
+    {
+      id: 'banana_g',
+      name: 'Banana (grams)',
+      value: bananaG,
+      onChange: setBananaG,
+      unit: 'g',
+      inputProps: { min: 0, max: 300, step: 5 },
+      nutrient: NUTRIENTS.banana_per_g,
+    },
     {
       id: 'pb',
       name: 'Peanut butter',
